@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+      <head>
+        <meta charset="utf-8">
+        <title>UniDL4BioPep</title>
+
+		<style>
+			.content {
+			  max-width: 1000px;
+			  margin: auto;
+			}
+
+			</style>
+    </head>
+
+<body>
+<div class="content">
+    <body>
+
+
+        <h1>LM4ACE: A universal deep learning architecture for bioactive peptide prediction</h1>
+        <p>The webserver is the implementation of the paper UniDL4BioPep: UniDL4BioPep: A universal deep learning architecture for binary classification in peptide bioactivity<p>
+        <form action="{{url_for('predict')}}" method="post">
+             <input type="text" name="Model selection" placeholder="input model index, example:1" required="required">
+            <input type="text" name="Peptide_sequences" placeholder="peptide sequence input, example: ASD,QWE,APE" required="required">
+            <button type="submit" class="btn btn-primary btn-block btn-large">Run</button>
+        </form>
+        <br>
+        <br>
+        {{ prediction_text }}
+        <h4>Usage of the webserver:<h4>
+        <h5>1. Select a prediction model based on their index, 1. logistic regression (LR); 2. Support vector machine (SVM); 3. Multilayer perceptrons (MLP)<h5>
+        <h5>2. Input your peptide sequence and separate them by comma
+        <h5>Example: you can input 1 in the first box and ARG,IPI,CCL,FIRST; Than means you want to use "ACE inhibitory activity prediction model" to predict the bioactivity of the four peptide sequences <h5>
+        <img src="static/css/Whole architecture.png" alt="Whole architecture" width="1000" height="410" style="float:left">
+</div>
+</div>
+</html>

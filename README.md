@@ -8,7 +8,7 @@ Sp_collecton 0.8769230769230769
 
 MCC_collection 0.7656758452182151
 
-BASCC 0.8911642411642411
+BACC 0.8911642411642411
 
 Multilayer perceptrons (MLP) model performance in test dataset
 

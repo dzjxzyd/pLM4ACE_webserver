@@ -3,7 +3,12 @@
 
       <head>
         <meta charset="utf-8">
-        <title>UniDL4BioPep</title>
+        <title>pLM4ACE</title>
+        <link href='https://fonts.googleapis.com/css?family=Tangerine' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family==Rancho&effect=shadow-multiple' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Tangerine' rel='stylesheet' type='text/css'>
+        <link href='https://fonts.googleapis.com/css?family=Tangerine' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
 		<style>
 			.content {
@@ -15,25 +20,77 @@
     </head>
 
 <body>
-<div class="content">
-    <body>
-
-
+    <div class="content">
         <h1>pLM4ACE: A protein language model-based deep learning predictor for screening peptide with high antihypertensive activity</h1>
-        <p>The webserver is the implementation of the paper pLM4ACE: A protein language model-based deep learning predictor for screening peptide with high antihypertensive activity<p>
+        <p style="font-size:70%">The webserver is the implementation of the paper "pLM4ACE: A protein language model-based deep learning predictor for screening peptide with high antihypertensive activity"</p>
+	<p style="font-size:80%">Quick output version: 1. Choose a model  → 2. Input a peptide sequence</p>
         <form action="{{url_for('predict')}}" method="post">
-             <input type="text" name="Model selection" placeholder="input model index, example:1" required="required">
-            <input type="text" name="Peptide_sequences" placeholder="peptide sequence input, example: ASD,QWE,APE" required="required">
+            <label for="Model selection">Choose a model:</label>
+            <select name="Model selection" id="model1" required="required">
+                <option value="1">Logistic_Regression</option>
+                <option value="2">SVM</option>
+                <option value="3">Multilayer_Perceptron</option>
+
+            </select>
+{#            <input type="text" name="Model selection" placeholder="input model index, example:1" required="required">#}
+            <input type="text" name="Peptide_sequences" placeholder="peptide sequence input, example: ASD,QWE,APE" required="required" />
             <button type="submit" class="btn btn-primary btn-block btn-large">Run</button>
         </form>
+        <p style="color:cyan"> {{ prediction_text }} </p>
+        <br/>
+        <br/>
+        <p style="font-size:80%">Large-scale output version: 1. Prepare your files (xls, xlsx, fasta, or txt) and click “Choose File” for uploading → 2. Choose a model for classification  → 3. Download the results. </p>
+        <form action="{{url_for('pred_with_file')}}" method="post" enctype = "multipart/form-data">
+            <label for="Model_selection">Choose a model:</label>
+            <select name="Model_selection" id="model2" required="required">
+                <option value="1">Logistic_Regression</option>
+                <option value="2">SVM</option>
+                <option value="3">Multilayer_Perceptron</option>
+            </select>
         <br>
-        <br>
-        {{ prediction_text }}
-        <h4>Usage of the webserver:<h4>
-        <h5>1. Select a prediction model based on their index, 1. logistic regression (LR); 2. Support vector machine (SVM); 3. Multilayer perceptrons (MLP)<h5>
-        <h5>2. Input your peptide sequence and separate them by comma
-        <h5>Example: you can input 1 in the first box and ARG,IPI,CCL,FIRST at the second box; Than means you want to use "Logistic Regression model" to predict the bioactivity of the four peptide sequences <h5>
-        <img src="static/css/Whole architecture.png" alt="Whole architecture" width="1000" height="410" style="float:left">
-</div>
-</div>
+            <label for="Peptide_sequences">Choose a file to upload</label>
+            <input type="file" name="Peptide_sequences" id="Peptide_sequences" accept=".xls,.xlsx,.txt,.fasta"/>
+            <button type="submit" class="btn btn-primary btn-block btn-large">Run</button>
+        </form>
+        <h4>Usage of the webserver:</h4>
+        <p style="font-size:80%"> Example for “Quick output version” : </p>
+        <p style="font-size:70%">1. Select Logistic_Regression model for antihypertensive activity prediction.   →   →  →  2. Insert a peptide or protein sequence, “VPP” →   →  →  3. Click “Run”→   →  → 4. The result will be returned in seconds below the “Run” button</p>
+        <p style="font-size:70%">Notice: it also support multiple sequence at the same time. Just input as “VPP,IPP,CCL,AGR” (sequences are separated by comma, no space)</p>
+        <p style="font-size:80%"> Example for “Large-scale output version:” : </p>
+        <p style="font-size:70%">1. Prepare your xls, xlsx, txt or fasta files  →  →  → 2. Upload the file through “Choose File” botton  →   →  → 3. Click “Run” →   →  → 4. It will automatically download your results. </p>
+        <p style="font-size:70%">Notice: File preparation should follow the examples under this repository https://github.com/dzjxzyd/pLM4ACE/tree/main/Example%20uploading%20files </p>
+        <h4>Model performance in test dataset</h4>
+        <table style="width:100%">
+          <tr>
+            <th style="text-align: center; vertical-align: middle;">Model</th>
+            <th style="text-align: center; vertical-align: middle;">Balanced ACC</th>
+            <th style="text-align: center; vertical-align: middle;">Sensitivity</th>
+            <th style="text-align: center; vertical-align: middle;">Specificity</th>
+            <th style="text-align: center; vertical-align: middle;" >Matthews correlation coefficient </th>
+          </tr>
+          <tr>
+            <td style="text-align: center; vertical-align: middle;" >Logistic regression</td>
+            <td style="text-align: center; vertical-align: middle;">0.883 ± 0.017</td>
+            <td style="text-align: center; vertical-align: middle;" >0.845 ± 0.041</td>
+            <td style="text-align: center; vertical-align: middle;">0.92 ± 0.025</td>
+            <td style="text-align: center; vertical-align: middle;">0.77 ± 0.032</td>
+          </tr>
+          <tr>
+            <td style="text-align: center; vertical-align: middle;">SVM</td>
+            <td style="text-align: center; vertical-align: middle;">0.867 ± 0.02</td>
+            <td style="text-align: center; vertical-align: middle;">0.825 ± 0.041</td>
+            <td style="text-align: center; vertical-align: middle;">0.91 ± 0.027</td>
+            <td style="text-align: center; vertical-align: middle;">0.74 ± 0.038</td>
+          </tr>
+          <tr>
+            <td style="text-align: center; vertical-align: middle;">Multilayer perceptron</td>
+            <td style="text-align: center; vertical-align: middle;">0.855 ± 0.024</td>
+            <td style="text-align: center; vertical-align: middle;">0.815 ± 0.036</td>
+            <td style="text-align: center; vertical-align: middle;">0.895 ± 0.037</td>
+            <td style="text-align: center; vertical-align: middle;">0.711 ± 0.054</td>
+          </tr>
+        </table>
+        <img src="static/css/Whole architecture.png" alt="Whole architecture" width="1000" height="400" style="float:left">
+    </div>
+</body>
 </html>

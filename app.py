@@ -140,11 +140,7 @@ def predict():
     embeddings_results = esm_embeddings(peptide_sequence_list)  # conduct the embedding
 
     # prediction
-    predicted_protability = model.predict(embeddings_results)
-    predicted_class = []
-    for i in range(predicted_protability.shape[0]):
-        index = np.where(predicted_protability[i] == np.amax(predicted_protability[i]))[0][0]
-        predicted_class.append(index)  # get the class of the results
+    predicted_class = model.predict(embeddings_results)
     predicted_class = assign_activity(predicted_class)  # transform results (0 and 1) into 'active' and 'non-active'
     final_output = []
     for i in range(len(sequence_list)):
@@ -197,11 +193,7 @@ def pred_with_file():
     embeddings_results = esm_embeddings(peptide_sequence_list)  # conduct the embedding
 
     # prediction
-    predicted_protability = model.predict(embeddings_results)
-    predicted_class = []
-    for i in range(predicted_protability.shape[0]):
-        index = np.where(predicted_protability[i] == np.amax(predicted_protability[i]))[0][0]
-        predicted_class.append(index)  # get the class of the results
+    predicted_class = model.predict(embeddings_results)
     predicted_class = assign_activity(predicted_class)  # transform results (0 and 1) into 'active' and 'non-active'
 
     report = {"sequence": sequence_list, "activity": predicted_class}

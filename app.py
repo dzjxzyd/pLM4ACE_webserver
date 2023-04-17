@@ -61,10 +61,10 @@ def assign_activity(predicted_class):
     for i in range(len(predicted_class)):
         if predicted_class[i] == 0:
             # out_put[int_features[i]].append(1)
-            out_put.append('active')
+            out_put.append('high activity')
         else:
             # out_put[int_features[i]].append(2)
-            out_put.append('non-active')
+            out_put.append('low & non-activity ')
     return out_put
 
 
